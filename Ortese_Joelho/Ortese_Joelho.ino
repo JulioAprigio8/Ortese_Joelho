@@ -19,6 +19,7 @@ float eixo_x, eixo_y, eixo_z;
 int pot;
 void setup() {
   checkBNO();
+  delay(1000);
 }
 
 void loop() {
@@ -30,4 +31,14 @@ void loop() {
   eixo_y = euler.y();
   eixo_z = euler.z();
 
+}
+void checkBNO() {
+  Serial.print("Detectando sensor BNO055...");
+  while (!bno.begin()) {
+    /* There was a problem detecting the BNO055 ... check your connections */
+    Serial.print("[ERRO] verificar fiacao ou o integridade do modulo BNO055");
+    delay(2000);
+  }
+  Serial.println("BNO055 DETECTADO");
+  bno.setExtCrystalUse(true);
 }
