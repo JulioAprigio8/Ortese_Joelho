@@ -12,7 +12,7 @@
 #define TOKEN ""
 #define MQTT_CLIENT_NAME ""
 
-Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29);
+Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28);
 void checkBNO();
 
 float eixo_x, eixo_y, eixo_z;
