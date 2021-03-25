@@ -22,11 +22,11 @@
 #define pin_pot 13 //GPIO13 para o pino do potenciometro
 
 float eixo_x, eixo_y, eixo_z;
-int potenciometro;
+int potenciometro,map_pot;
 
 //=================================================
 //=============MQTT Broker=========================
-char mqttBroker[] = "";
+char mqttBroker[] = "things.ubidots.com";
 char payload[100];
 char topic[150];
 char topicSubscribe[100];
@@ -55,6 +55,26 @@ void checkBNO();
 
 
 void setup() {
+  Serial.begin(115200);
+  WiFi.begin(WIFISSID,PASSWORD);
+  Serial.println();
+  Serial.print("Wait for WiFi...");
+  
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+  
+  Serial.println("");
+  Serial.println("WiFi Connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+  client.setServer(mqttBroker, 1883);
+  client.setCallback(callback);
+
+  sprintf(topicSubscribe, "/v1.6/devices/%s/%s/lv", DEVICE_LABEL, VARIABLE_LABEL_SUBSCRIBE);
+  
+  client.subscribe(topicSubscribe);
   pinMode(pin_pot,INPUT);
   checkBNO();
   delay(1000);
@@ -68,6 +88,20 @@ void loop() {
   sprintf(topic,"%s%s","/v1.6/devices",DEVICE_LABEL);
   sprintf(payload,"%s","");
   sprintf(payload,"{\"%s\":",VARIABLE_LABEL_POT);
+
+  potenciometro = analogRead(pin_pot);
+  map_pot = map(potenciometro,0,4096,0,100);
+  Serial.print("Valor bruto: ");
+  Serial.print(potenciometro);
+  Serial.print(" Valor Ajustado: ");
+  Serial.print(map_pot);
+  
+  dtostrf(map_pot,4,2,str_sensor);
+
+  sprintf(payload, "%s {\"value\": %s}}",payload,str_sensor);
+  Serial.println("Publishing data to Ubidots Cloud");
+  client.loop();
+  delay(1000);
   
 //  imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
 //  imu::Vector<3> acc = bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
