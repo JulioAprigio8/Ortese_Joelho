@@ -10,10 +10,9 @@ void loop()
 potenciometro = analogRead(pin_pot);
 Serial.print("Valor ADC= ");
 Serial.print(potenciometro);
-delay(1000);
 voltagem = (potenciometro * 3.3 ) / (4095);
 Serial.print(" Tensao= ");
 Serial.print(voltagem);
 Serial.println(" V");
-delay(1000);
+delay(100);
 }
