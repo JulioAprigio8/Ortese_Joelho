@@ -8,7 +8,7 @@ float eixo_x, eixo_y, eixo_z;
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
 void checkBNO();
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   checkBNO();
 }
 
