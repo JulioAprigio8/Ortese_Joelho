@@ -7,7 +7,7 @@
 #include <utility/imumaths.h>
 //=================================================
 //============Dados configuração===================
-#define pin_pot 13 //GPIO13 para o pino do potenciometro
+#define pin_pot 35 //GPIO13 para o pino do potenciometro
 float eixo_x, eixo_y, eixo_z;
 int potenciometro, map_pot;
 //=================================================
@@ -102,22 +102,17 @@ void reconnect() {
   }
 }
 void loop() {
-  potenciometro = analogRead(pin_pot);
-  map_pot = map(potenciometro, 0, 4095, 0, 100);
   if (!client.connected()) {
     reconnect();
   }
+  potenciometro = analogRead(pin_pot);
+  map_pot = map(potenciometro, 0, 4095, 0, 100);
   client.loop();
 
   long now = millis();
   if (now - lastMsg > 1000) {
+
     lastMsg = now;
-    // Convert the value to a char array
-    char potString[8];
-    dtostrf(potenciometro, 1, 2, potString);
-    Serial.print("Potenciometro: ");
-    Serial.println(potenciometro);
-    client.publish("esp32/potenciometro", potString);
 
     imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
     eixo_x = euler.x();
@@ -143,6 +138,13 @@ void loop() {
     Serial.println(eixo_z);
     client.publish("esp32/eixo_z", zString);
 
+
+    // Convert the value to a char array
+    char potString[8];
+    Serial.print("Pot: ");
+    Serial.println(map_pot);
+    dtostrf(map_pot, 1, 2, potString);
+    client.publish("esp32/pot", potString);
   }
 
 }
