@@ -110,7 +110,7 @@ void loop() {
   client.loop();
 
   long now = millis();
-  if (now - lastMsg > 1000) {
+  if (now - lastMsg > 50) {
 
     lastMsg = now;
 

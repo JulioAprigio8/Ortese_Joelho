@@ -1,4 +1,4 @@
-*********
+/*********
   Rui Santos
   Complete project details at https://RandomNerdTutorials.com/esp32-mpu-6050-web-server/
   
@@ -9,7 +9,6 @@
   copies or substantial portions of the Software.
 *********/
 
-#include <Arduino.h>
 #include <WiFi.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
@@ -19,8 +18,8 @@
 #include "SPIFFS.h"
 
 // Replace with your network credentials
-const char* ssid = "REPLACE_WITH_YOUR_SSID";
-const char* password = "REPLACE_WITH_YOUR_PASSWORD";
+const char* ssid = "Paulo Aprigio 2.4GHz";
+const char* password = "";
 
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
